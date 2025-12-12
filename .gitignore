@@ -1,0 +1,25 @@
+# Docker
+semaphore-postgres/
+semaphore_data/
+*.log
+
+# Ansible
+*.retry
+*.vault
+vault_pass.txt
+
+# Sensitive data
+.env
+secrets.yml
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups
+*.bak
+*.backup

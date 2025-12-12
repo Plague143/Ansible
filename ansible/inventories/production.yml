@@ -1,0 +1,18 @@
+all:
+  hosts:
+    main_server:
+      ansible_host: 192.168.0.16
+      ansible_user: root
+      # Ключ будет указан в Semaphore через интерфейс
+    
+  children:
+    local_servers:
+      hosts:
+        main_server:
+    
+    all_servers: &all_servers
+      hosts:
+        main_server:
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+        timezone: Asia/Krasnoyarsk

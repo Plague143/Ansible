@@ -1,0 +1,16 @@
+---
+# Общие переменные для всех хостов
+ansible_user: root
+system_timezone: Asia/Krasnoyarsk
+
+# Пакеты для установки
+common_packages:
+  - curl
+  - wget
+  - htop
+  - git
+  - vim
+
+# Настройки
+backup_dir: /var/backups
+log_dir: /var/log/apps

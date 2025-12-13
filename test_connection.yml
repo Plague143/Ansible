@@ -1,0 +1,35 @@
+---
+- name: Test Connection to Server
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Display success message
+      debug:
+        msg: "✅ Successfully connected to {{ inventory_hostname }}"
+
+    - name: Show system information
+      debug:
+        msg: |
+          Server: {{ inventory_hostname }}
+          OS: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          IP: {{ ansible_default_ipv4.address }}
+
+    - name: Create test file
+      copy:
+        content: |
+          Test file created by Ansible via Semaphore
+          Date: {{ ansible_date_time.date }}
+          Time: {{ ansible_date_time.time }}
+          Host: {{ inventory_hostname }}
+        dest: /tmp/semaphore_success.txt
+        mode: '0644'
+
+    - name: Show created file
+      command: ls -la /tmp/semaphore_success.txt
+      register: file_info
+
+    - name: Display file info
+      debug:
+        var: file_info.stdout_lines

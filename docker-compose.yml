@@ -21,7 +21,7 @@ services:
       SEMAPHORE_DB_PORT: 5432
       SEMAPHORE_DB_DIALECT: postgres
       SEMAPHORE_DB: semaphore
-      SEMAPHORE_PLAYBOOK_PATH: /semaphore/ansible
+      SEMAPHORE_PLAYBOOK_PATH:  /root/semaphore/ansible
       SEMAPHORE_ADMIN_PASSWORD: xxXX4433
       SEMAPHORE_ADMIN_NAME: plague
       SEMAPHORE_ADMIN_EMAIL: admin@localhost
@@ -37,7 +37,7 @@ services:
       SEMAPHORE_LDAP_SEARCH_FILTER: "(\u0026(uid=%s)(memberOf=cn=ipausers,cn=groups,cn=accounts,dc=local,dc=example,dc=com))"
       TZ: Asia/Krasnoyarsk
     volumes:
-      - ./ansible:/semaphore/ansible
+      - ./ansible:/root/semaphore/ansible
     depends_on:
       - postgres
     env_file:

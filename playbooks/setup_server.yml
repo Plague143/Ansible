@@ -1,0 +1,50 @@
+---
+- name: Basic Server Setup
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install essential packages
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - htop
+          - net-tools
+          - ufw
+        state: present
+
+    - name: Configure timezone
+      timezone:
+        name: Asia/Krasnoyarsk
+
+    - name: Set hostname
+      hostname:
+        name: "{{ new_hostname | default(inventory_hostname) }}"
+
+    - name: Create admin user
+      user:
+        name: admin
+        groups: sudo
+        shell: /bin/bash
+        create_home: yes
+        state: present
+
+    - name: Setup firewall
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+      notify: enable ufw
+
+  handlers:
+    - name: enable ufw
+      ufw:
+        state: enabled
+        policy: deny

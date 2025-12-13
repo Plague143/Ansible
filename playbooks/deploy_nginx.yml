@@ -1,0 +1,51 @@
+---
+- name: Deploy Nginx Web Server
+  hosts: web_servers
+  become: yes
+
+  vars:
+    nginx_version: stable
+    website_domain: example.com
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create website directory
+      file:
+        path: /var/www/{{ website_domain }}
+        state: directory
+        mode: '0755'
+
+    - name: Deploy website files
+      copy:
+        src: files/website/
+        dest: /var/www/{{ website_domain }}/
+        mode: '0644'
+
+    - name: Configure Nginx site
+      template:
+        src: templates/nginx-site.conf.j2
+        dest: /etc/nginx/sites-available/{{ website_domain }}
+      notify: restart nginx
+
+    - name: Enable site
+      file:
+        src: /etc/nginx/sites-available/{{ website_domain }}
+        dest: /etc/nginx/sites-enabled/{{ website_domain }}
+        state: link
+      notify: restart nginx
+
+    - name: Remove default site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted
